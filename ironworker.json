@@ -1,0 +1,89 @@
+{
+  "id": "/ironworker",
+  "cmd": null,
+  "cpus": 2,
+  "mem": 2048,
+  "disk": 0,
+  "instances": 2,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "index.docker.io/iron/runner:beta",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 0,
+          "hostPort": 0,
+          "servicePort": 10000,
+          "protocol": "tcp",
+          "labels": {}
+        }
+      ],
+      "privileged": true,
+      "parameters": [
+        {
+        }
+      ],
+      "forcePullImage": true
+    }
+  },
+  "env": {
+    "CLUSTER_ID": "CLUSTERID",
+    "CLUSTER_TOKEN": "CLUSTERTOKEN",
+    "ENV": "PRODUCTION"
+  },
+  "healthChecks": [
+    {
+      "protocol": "COMMAND",
+      "command": {
+        "value": "ps -Aef | grep -q ./runner"
+      },
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    },
+    {
+      "protocol": "COMMAND",
+      "command": {
+        "value": "ps -Aef | grep -q dockerd"
+      },
+      "gracePeriodSeconds": 60,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 2,
+      "ignoreHttp1xx": false
+    },
+    {
+      "protocol": "COMMAND",
+      "command": {
+        "value": "docker ps -a"
+      },
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "portDefinitions": [
+    {
+      "port": 10000,
+      "protocol": "tcp",
+      "labels": {}
+    }
+  ],
+  "uris": [
+    "file:///etc/docker.tar.gz"
+  ],
+  "fetch": [
+    {
+      "uri": "file:///etc/docker.tar.gz",
+      "extract": true,
+      "executable": false,
+      "cache": false
+    }
+  ]
+}
