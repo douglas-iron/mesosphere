@@ -9,7 +9,7 @@
     "type": "DOCKER",
     "volumes": [],
     "docker": {
-      "image": "index.docker.io/iron/runner:beta",
+      "image": "index.docker.io/iron/gorunner",
       "network": "BRIDGE",
       "portMappings": [
         {
